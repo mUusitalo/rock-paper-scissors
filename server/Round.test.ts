@@ -4,35 +4,13 @@ describe('Round', () => {
   it('should be defined', () => {
     expect(Round).toBeDefined()
   })
-
-  describe("When not finished", () => {
-    it('when no moves have been made', () => {
-      const round = new Round(1000)
-      const result = round.result
-      expect(result).toBeNull()
-    })
-
-    it('when only one left has made a move', () => {
-      const round = new Round(1000)
-      round.addMove('ROCK', 'LEFT')
-      const result = round.result
-      expect(result).toBeNull()
-    })
-
-    it('when only right has made a move', () => {
-      const round = new Round(1000)
-      round.addMove('ROCK', 'RIGHT')
-      const result = round.result
-      expect(result).toBeNull()
-    })
-  })
   
   describe('Move-based results', () => {
-    it("Left should win with reason 'move' when played within time constraint", () => {
+    it("Left should win with reason 'move' when played within time constraint", async () => {
       const round = new Round(1000)
-      round.addMove('PAPER', 'LEFT')
-      round.addMove('ROCK', 'RIGHT')
-      const result = round.result
+      round.makeMove('PAPER', 'LEFT')
+      round.makeMove('ROCK', 'RIGHT')
+      const result = await round.result
       expect(result).toBeDefined()
       const { winner, reason } = result ?? {}
       expect(winner).toBeDefined()
@@ -41,11 +19,11 @@ describe('Round', () => {
       expect(reason).toBe('move')
     })
 
-    it("Right should win with reason 'move' when played within time constraint", () => {
+    it("Right should win with reason 'move' when played within time constraint", async () => {
       const round = new Round(1000)
-      round.addMove('PAPER', 'LEFT')
-      round.addMove('SCISSORS', 'RIGHT')
-      const result = round.result
+      round.makeMove('PAPER', 'LEFT')
+      round.makeMove('SCISSORS', 'RIGHT')
+      const result = await round.result
       expect(result).toBeDefined()
       const { winner, reason } = result ?? {}
       expect(winner).toBeDefined()
@@ -70,10 +48,10 @@ describe('Round', () => {
       round = new Round(1000)
     })
 
-    it("Left should win with reason 'time' when right is too slow", () => {
-      round.addMove('PAPER', 'LEFT')
+    it("Left should win with reason 'time' when right is too slow", async () => {
+      round.makeMove('PAPER', 'LEFT')
       jest.advanceTimersByTime(1001)
-      const result = round.result
+      const result = await round.result
       expect(result).toBeDefined()
       const { winner, reason } = result ?? {}
       expect(winner).toBeDefined()
@@ -82,10 +60,10 @@ describe('Round', () => {
       expect(reason).toBe('time')
     })
 
-    it("Right should win with reason 'time' when left is too slow", () => {
-      round.addMove('ROCK', 'RIGHT')
+    it("Right should win with reason 'time' when left is too slow", async () => {
+      round.makeMove('ROCK', 'RIGHT')
       jest.advanceTimersByTime(1001)
-      const result = round.result
+      const result = await round.result
       expect(result).toBeDefined()
       const { winner, reason } = result ?? {}
       expect(winner).toBeDefined()
@@ -94,9 +72,9 @@ describe('Round', () => {
       expect(reason).toBe('time')
     })
 
-    it("Should end in a draw with reason 'time' when both players are too slow", () => {
+    it("Should end in a draw with reason 'time' when both players are too slow", async () => {
       jest.advanceTimersByTime(1001)
-      const result = round.result
+      const result = await round.result
       expect(result).toBeDefined()
       const { winner, reason } = result ?? {}
       expect(winner).toBeDefined()
