@@ -5,25 +5,48 @@ export class Round {
   timeout: number
   left?: TimedMove
   right?: TimedMove
-  _result?: RoundResult
-  _startTime: number
+  private _result?: RoundResult
+  private startTime: number
+  private timeoutId: NodeJS.Timeout
 
   constructor(timeout: number) {
     this.timeout = timeout
-    this._startTime = Date.now()
+    this.startTime = Date.now()
+    this.timeoutId = setTimeout(this.handleTimeout.bind(this), timeout)
   }
 
   getMove(side: Side) {
     return side === 'LEFT' ? this.left : this.right
   }
 
+  private cancelTimeoutIfBothMovesHaveBeenMade() {
+    if (this.left && this.right) clearTimeout(this.timeoutId)
+  }
+
   addMove(move: Move, side: Side) {
     if (this.getMove(side)) {
       throw new Error(`Move already added for ${side}`)
     }
-    const timeTakenMs = Date.now() - this._startTime
+    const timeTakenMs = Date.now() - this.startTime
     const TimedMove = { move, timeTakenMs }
     side === 'LEFT' ? (this.left = TimedMove) : (this.right = TimedMove)
+    this.cancelTimeoutIfBothMovesHaveBeenMade()
+  }
+
+  private handleTimeout() {
+    if (this.left && this.right) return
+
+    const reason = 'time'
+
+    if (!(this.left || this.right)) {
+      this._result = { winner: 'DRAW', reason }
+      return
+    }
+
+    this._result = {
+      winner: this.left ? 'LEFT' : 'RIGHT',
+      reason,
+    }
   }
 
   get result(): RoundResult | null {
@@ -37,15 +60,7 @@ export class Round {
     const { move: leftMove, timeTakenMs: leftTime } = left
     const { move: rightMove, timeTakenMs: rightTime } = right
 
-    if (leftTime > this.timeout && rightTime > this.timeout) {
-      this._result = { winner: 'DRAW', reason: 'time' }
-    } else if (leftTime > this.timeout) {
-      this._result = { winner: 'RIGHT', reason: 'time' }
-    } else if (rightTime > this.timeout) {
-      this._result = { winner: 'LEFT', reason: 'time' }
-    } else {
-      this._result = { winner: runGame(leftMove, rightMove), reason: 'move' }
-    }
+    this._result = { winner: runGame(leftMove, rightMove), reason: 'move' }
 
     return this._result
   }
