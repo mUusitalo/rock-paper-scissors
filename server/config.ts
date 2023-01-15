@@ -3,6 +3,6 @@ dotenv.config('./.env');
 
 const { SERVER_PORT } = process.env
 
-export default {
+export {
   SERVER_PORT
 }
