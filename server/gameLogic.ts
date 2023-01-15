@@ -1,3 +1,4 @@
+// These indices are used for calculating the result of the game
 const Moves = {
   ROCK: 0,
   PAPER: 1,
@@ -10,6 +11,12 @@ export type Side = "LEFT" | "RIGHT"
 
 export type Result = Side | "DRAW"
 
+/**
+ * Runs a game of rock-paper-scissors.
+ * @param leftChoice Move of left player
+ * @param rightChoice Move of right player
+ * @returns The winner ("LEFT" or "RIGHT") or "DRAW" if both players made the same move
+ */
 export function runGame(leftChoice: Move, rightChoice: Move): Result {
   const length = Object.keys(Moves).length
   const result = (length + Moves[leftChoice] - Moves[rightChoice]) % length
@@ -21,6 +28,7 @@ export function runGame(leftChoice: Move, rightChoice: Move): Result {
     case 2:
       return "RIGHT"
     default:
+      // This should never be reached but a type-safe implementation would lead to repetitive code
       throw new Error("Invalid result")
   }
 }
