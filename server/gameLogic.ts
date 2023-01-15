@@ -1,22 +1,24 @@
-const RockPaperScissorsEnum = {
+const Moves = {
   ROCK: 0,
   PAPER: 1,
   SCISSORS: 2,
-}
+} as const
 
-const Player = {
-  LEFT: 0,
-  RIGHT: 1,
-}
+export type Move = keyof typeof Moves
 
-function runGame(leftChoice, rightChoice) {
-  const length = Object.keys(RockPaperScissorsEnum).length
-  const leftWon = (length + leftChoice - rightChoice) % length === 1
-  return leftWon ? Player.LEFT : Player.RIGHT
-}
+export type Result = "LEFT" | "RIGHT" | "DRAW"
 
-export default {
-  RockPaperScissorsEnum,
-  Player,
-  runGame,
+export function runGame(leftChoice: Move, rightChoice: Move): Result {
+  const length = Object.keys(Moves).length
+  const result = (length + Moves[leftChoice] - Moves[rightChoice]) % length
+  switch(result) {
+    case 0:
+      return "DRAW"
+    case 1:
+      return "LEFT"
+    case 2:
+      return "RIGHT"
+    default:
+      throw new Error("Invalid result")
+  }
 }
