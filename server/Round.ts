@@ -2,16 +2,16 @@ import { Move, Side, runGame } from './gameLogic'
 import { TimedMove, RoundResult } from './types'
 
 export class Round {
-  timeout: number
+  timeoutMs: number
   result: Promise<RoundResult>
   left?: TimedMove
   right?: TimedMove
   private startTime: number
   private timeoutId?: NodeJS.Timeout
-  private resolve?: (result: RoundResult) => void
+  private resolveResult?: (result: RoundResult) => void
 
   constructor(timeout: number) {
-    this.timeout = timeout
+    this.timeoutMs = timeout
     // Game is started immediately
     this.startTime = Date.now()
 
@@ -21,7 +21,7 @@ export class Round {
         () => resolve(this.getTimeoutResult()),
         timeout
       )
-      this.resolve = resolve
+      this.resolveResult = resolve
     })
   }
 
@@ -57,7 +57,7 @@ export class Round {
    */
   private handleBothMovesMade(): void {
     clearTimeout(this.timeoutId)
-    this.resolve?.(this.getMoveResult())
+    this.resolveResult?.(this.getMoveResult())
   }
 
   /**
