@@ -6,7 +6,9 @@ const Moves = {
 
 export type Move = keyof typeof Moves
 
-export type Result = "LEFT" | "RIGHT" | "DRAW"
+export type Side = "LEFT" | "RIGHT"
+
+export type Result = Side | "DRAW"
 
 export function runGame(leftChoice: Move, rightChoice: Move): Result {
   const length = Object.keys(Moves).length
