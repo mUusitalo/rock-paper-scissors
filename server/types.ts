@@ -1,14 +1,14 @@
 import { Round } from './Round'
 import { Move, Result } from './gameLogic'
 
-export type Game = {
+export type Match = {
   roundCount: number
   roundCutoff: number
   rounds: Array<Round>
-  result?: GameResult
+  result?: MatchResult
 }
 
-export type GameResult = {
+export type MatchResult = {
   winner: Result
   reason: 'rounds' | 'time' | 'draw'
 }
