@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config('./.env');
+dotenv.config({path: './.env'});
 
 const { SERVER_PORT } = process.env
 
