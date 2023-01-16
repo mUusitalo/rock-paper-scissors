@@ -53,15 +53,15 @@ function socketToPromiseRepeater(socket: Socket): () => Promise<Move> {
 async function startMatch() {
   const left = connections[0]
   const right = connections[1]
-  const getLeftMove = socketToPromiseRepeater(left)
-  const getRightMove = socketToPromiseRepeater(right)
+  const waitForLeftMove = socketToPromiseRepeater(left)
+  const waitForRightMove = socketToPromiseRepeater(right)
   
   match.run(() => {
     left.emit('round')
-    return getLeftMove()
+    return waitForLeftMove()
   }, () => {
     right.emit('round')
-    return getRightMove()
+    return waitForRightMove()
   })
 
   const result = await match.result
