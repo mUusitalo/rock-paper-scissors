@@ -19,6 +19,7 @@ class Match {
 
   async run(getLeftMove: () => Promise<Move>, getRightMove: () => Promise<Move>): Promise<void> {
     for (let i = 0; i < this.roundCount; i++) {
+      console.log("Round: ", i)
       const round = new Round(this.roundTimeoutMs)
       round.makeMoveAsync(getLeftMove(), 'LEFT')
       round.makeMoveAsync(getRightMove(), 'RIGHT')
