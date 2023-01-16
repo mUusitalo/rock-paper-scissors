@@ -4,6 +4,7 @@ import express from 'express'
 import Match from './Match'
 import { ROUND_COUNT, ROUND_DURATION, SERVER_PORT } from './config'
 import { Move } from './gameLogic'
+import { isMove } from './validateInput'
 
 const app = express()
 const server = createServer(app)
@@ -34,16 +35,15 @@ server.listen(SERVER_PORT)
 
 
 function socketToPromiseRepeater(socket: Socket): () => Promise<Move> {
-  let latestMove: Move | null = null
   let resolvePromise: ((move: Move) => void) | null = null
 
   socket.on('move', args => {
-    latestMove = args
+    if (!isMove(args)) return // Ignore invalid moves
     resolvePromise?.(args)
+    console.log("Move: ", args)
   })
 
   return () => {
-    latestMove = null
     return new Promise(resolve => {
       resolvePromise = resolve
     })
