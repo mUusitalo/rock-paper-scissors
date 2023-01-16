@@ -53,10 +53,10 @@ async function startMatch() {
   const getRightMove = socketToPromiseRepeater(right)
   
   match.run(() => {
-    left.emit('roundStart')
+    left.emit('round')
     return getLeftMove()
   }, () => {
-    right.emit('roundStart')
+    right.emit('round')
     return getRightMove()
   })
 
