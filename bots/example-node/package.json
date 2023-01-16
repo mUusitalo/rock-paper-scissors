@@ -4,21 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "debug": "^4.3.4",
-    "engine.io-client": "^6.2.3",
-    "engine.io-parser": "^5.0.6",
-    "ms": "^2.1.2",
+    "dotenv": "^16.0.3",
     "socket.io-client": "^4.5.4",
-    "socket.io-parser": "^4.2.1",
-    "ws": "^8.2.3",
-    "xmlhttprequest-ssl": "^2.0.0"
-  },
-  "devDependencies": {
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "paper": "ts-node-esm paper.ts",
-    "rock": "ts-node-esm rock.ts",
+    "start": "ts-node-esm index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
