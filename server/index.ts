@@ -56,11 +56,11 @@ async function startMatch() {
   const waitForLeftMove = socketToPromiseRepeater(left)
   const waitForRightMove = socketToPromiseRepeater(right)
   
-  match.run(() => {
-    left.emit('round')
+  match.run(leftResult => {
+    left.emit('round', leftResult)
     return waitForLeftMove()
-  }, () => {
-    right.emit('round')
+  }, rightResult => {
+    right.emit('round', rightResult)
     return waitForRightMove()
   })
 

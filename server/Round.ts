@@ -1,5 +1,5 @@
 import { Move, Side, runGame } from './gameLogic'
-import { TimedMove, RoundResult } from './types'
+import { TimedMove, RoundResult, PersonalizedResult } from './types'
 
 export class Round {
   timeoutMs: number
@@ -26,6 +26,14 @@ export class Round {
       )
       this.resolveResult = resolve
     })
+  }
+
+  async getPersonalizedResult(side: Side): Promise<PersonalizedResult> {
+    const result = await this.result
+    const you = this.getMove(side)?.move
+    const opponent = this.getMove(side === 'LEFT' ? 'RIGHT' : 'LEFT')?.move
+    const personalizedResult = result.winner === side ? 'win' : result.winner === 'DRAW' ? 'draw' : 'loss'
+    return { you, opponent, result: personalizedResult }
   }
 
   /**
@@ -64,7 +72,7 @@ export class Round {
    */
   private handleBothMovesMade(): void {
     clearTimeout(this.timeoutId)
-    this.resolveResult?.(this.getMoveResult())
+    this.resolveResult!(this.getMoveResult())
   }
 
   /**

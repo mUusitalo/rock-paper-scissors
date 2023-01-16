@@ -10,7 +10,7 @@ export type Move = keyof typeof Moves
 export type Side = "LEFT" | "RIGHT"
 
 export type Result = Side | "DRAW"
-
+  
 /**
  * Runs a game of rock-paper-scissors.
  * @param leftChoice Move of left player

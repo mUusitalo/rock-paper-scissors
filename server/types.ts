@@ -20,4 +20,10 @@ export type RoundResult = {
   reason: 'move' | 'time'
 }
 
+export type PersonalizedResult = {
+  you?: Move,
+  opponent?: Move,
+  result: 'win' | 'loss' | 'draw'
+}
+
 

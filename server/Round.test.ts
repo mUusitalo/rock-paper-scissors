@@ -83,4 +83,48 @@ describe('Round', () => {
       expect(reason).toBe('time')
     })
   })
+
+  describe("getPersonalizedResult", () => {
+    it("Should return correct result for each player in a non-draw", async () => {
+      const round = new Round(1000)
+      round.makeMove('PAPER', 'LEFT')
+      round.makeMove('ROCK', 'RIGHT')
+      const leftResult = await round.getPersonalizedResult('LEFT')
+      expect(leftResult).toBeDefined()
+      expect(leftResult).toEqual({
+        you: 'PAPER',
+        opponent: 'ROCK',
+        result: 'win'
+      })
+
+      const rightResult = await round.getPersonalizedResult('RIGHT')
+      expect(rightResult).toBeDefined()
+      expect(rightResult).toEqual({
+        you: 'ROCK',
+        opponent: 'PAPER',
+        result: 'loss'
+      })
+    })
+
+    it("Should return correct result for each player in a draw", async () => {
+      const round = new Round(1000)
+      round.makeMove('PAPER', 'LEFT')
+      round.makeMove('PAPER', 'RIGHT')
+      const leftResult = await round.getPersonalizedResult('LEFT')
+      expect(leftResult).toBeDefined()
+      expect(leftResult).toEqual({
+        you: 'PAPER',
+        opponent: 'PAPER',
+        result: 'draw'
+      })
+
+      const rightResult = await round.getPersonalizedResult('RIGHT')
+      expect(rightResult).toBeDefined()
+      expect(rightResult).toEqual({
+        you: 'PAPER',
+        opponent: 'PAPER',
+        result: 'draw'
+      })
+    })
+  })
 })
