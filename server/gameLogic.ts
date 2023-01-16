@@ -1,5 +1,5 @@
 // These indices are used for calculating the result of the game
-const Moves = {
+export const Moves = {
   ROCK: 0,
   PAPER: 1,
   SCISSORS: 2,

@@ -10,7 +10,7 @@ export type Match = {
 
 export type MatchResult = {
   winner: Result
-  reason: 'rounds' | 'time' | 'draw'
+  reason: 'rounds' | 'roundCutoff'
 }
 
 export type TimedMove = { move: Move; timeTakenMs: number }

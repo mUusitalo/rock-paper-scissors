@@ -52,6 +52,10 @@ export class Round {
     }
   }
 
+  async makeMoveAsync(move: Promise<Move>, side: Side): Promise<void> {
+    this.makeMove(await move, side)
+  }
+  
   /**
    * Clears the timeout and resolves the promise with the result based on the moves.
    */
