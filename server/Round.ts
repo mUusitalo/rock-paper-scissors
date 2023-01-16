@@ -11,6 +11,9 @@ export class Round {
   private resolveResult?: (result: RoundResult) => void
 
   constructor(timeout: number) {
+    if (timeout < 0) {
+      throw new Error('Timeout cannot be negative')
+    }
     this.timeoutMs = timeout
     // Game is started immediately
     this.startTime = Date.now()
