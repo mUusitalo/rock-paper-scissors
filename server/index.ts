@@ -16,6 +16,10 @@ const match = new Match(ROUND_COUNT, ROUND_DURATION)
 io.on('connection', socket => {
   connections.push(socket)
 
+  if (connections.length > 2) {
+    throw new Error('Too many players')
+  }
+
   if (connections.length === 2) {
     startMatch()
   }
