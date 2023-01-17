@@ -120,5 +120,6 @@ async function startMatch() {
   
 
   const result = await match.result
+  io.emit('result', result.winner)
   console.log('Match result: ', result)
 }

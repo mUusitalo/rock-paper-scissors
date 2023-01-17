@@ -42,7 +42,8 @@ function App() {
       setRounds(data)
     })
 
-    socket.on('winner', (winningSide: Side) => {
+    socket.on('result', (winningSide: Side) => {
+      console.log("result: ", winningSide)
       setWinningSide(winningSide)
     })
 
