@@ -2,8 +2,8 @@ import { io } from 'socket.io-client'
 import dotenv from 'dotenv'
 dotenv.config({path: '../../.env'})
 
-const { BASE_URL, SERVER_PORT } = process.env
-const SERVER_URL = `${BASE_URL}:${SERVER_PORT}`
+const { HOST, SERVER_PORT } = process.env
+const SERVER_URL = `http://${HOST}:${SERVER_PORT}`
 
 export const Moves = {
   ROCK: 0,
@@ -25,6 +25,7 @@ function main() {
   let roundIndex = 0
 
   socket.on('round', (previousRound: RoundResult | undefined) => {
+    console.log(previousRound)
     const possibleMoves = Object.keys(Moves) as Move[]
     const move = possibleMoves[roundIndex % possibleMoves.length]
     socket.emit('move', move)
