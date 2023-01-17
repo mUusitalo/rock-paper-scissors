@@ -10,7 +10,7 @@ services:
   bot1:
     image: bot1
     build:
-      context: "${BOT_1_PATH}"
+      context: "${BOT_2_PATH}"
     depends_on:
       - server
 

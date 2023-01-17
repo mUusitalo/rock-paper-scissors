@@ -1,10 +1,11 @@
 from asyncio import sleep
 from dataclasses import dataclass
 import os
+import time
 from typing import Literal, get_args
 import socketio
 
-SERVER_URL = f"http://localhost:3001"
+SERVER_URL = f"http://server:3001"
 
 Move = Literal["ROCK", "PAPER", "SCISSORS"]
 Result = Literal["win", "loss", "draw"]
@@ -15,7 +16,7 @@ class RoundResult:
   opponent: Move
   result: Result
 
-sio = socketio.Client()
+sio = socketio.Client(reconnection=True, reconnection_attempts=0)
 
 round_index = 0
 
@@ -34,5 +35,14 @@ def round(previous_round: RoundResult | None):
   round_index += 1
 
 print(f"Trying to connect to {SERVER_URL}")
-sio.connect(SERVER_URL)
+
+connected = False
+while not connected:
+    try:
+        sio.connect(SERVER_URL)
+        print("Socket established")
+        connected = True
+    except Exception as ex:
+        print("Failed to establish initial connnection to server:", type(ex).__name__)
+        time.sleep(2)
 

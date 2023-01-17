@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 import dotenv from 'dotenv'
 
-const SERVER_URL = 'http://localhost:3001'
+const SERVER_URL = 'http://server:3001'
 
 export const Moves = {
   ROCK: 0,
@@ -17,23 +17,21 @@ type RoundResult = {
   result: 'win' | 'loss' | 'draw'
 }
 
-function main() {
-  const socket = io(SERVER_URL, { autoConnect: true })
-  
-  let roundIndex = 0
+console.log("Trying to connect to server")
+const socket = io(SERVER_URL)
+socket.connect()
 
-  socket.on('connect', () => {
-    console.log("Connected to server")
-    socket.emit('bot', 'example-node')
-  })
+let roundIndex = 0
 
-  socket.on('round', (previousRound: RoundResult | undefined) => {
-    console.log(previousRound)
-    const possibleMoves = Object.keys(Moves) as Move[]
-    const move = possibleMoves[roundIndex % possibleMoves.length]
-    socket.emit('move', move)
-    roundIndex++
-  })
-}
+socket.on('connect', () => {
+  console.log("Connected to server")
+  socket.emit('bot', 'example-node')
+})
 
-main()
+socket.on('round', (previousRound: RoundResult | undefined) => {
+  console.log(previousRound)
+  const possibleMoves = Object.keys(Moves) as Move[]
+  const move = possibleMoves[roundIndex % possibleMoves.length]
+  socket.emit('move', move)
+  roundIndex++
+})

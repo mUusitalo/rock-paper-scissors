@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     socket.connect()
     socket.on('bots', (bots: Bots) => {
-      console.log(bots)
+      console.log('bots: ', bots)
       setBots(bots)
       if (bots.left && bots.right) {
         setStartDisabled(false)
@@ -38,7 +38,7 @@ function App() {
     })
 
     socket.on('rounds', (data: Round[]) => {
-      console.log(data)
+      console.log('rounds: ', data)
       setRounds(data)
     })
 
