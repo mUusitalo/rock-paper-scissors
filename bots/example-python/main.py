@@ -1,3 +1,4 @@
+from asyncio import sleep
 from dataclasses import dataclass
 import os
 from typing import Literal, get_args
@@ -33,6 +34,5 @@ def round(previous_round: RoundResult | None):
   round_index += 1
 
 print(f"Trying to connect to {SERVER_URL}")
-
 sio.connect(SERVER_URL)
 

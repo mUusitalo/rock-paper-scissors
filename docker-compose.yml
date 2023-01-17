@@ -3,8 +3,7 @@ services:
     image: server
     env_file: .env
     build:
-      context: .
-      dockerfile: server/Dockerfile
+      context: server
     ports:
       - 3001:3001
 
@@ -18,6 +17,7 @@ services:
   bot2:
     image: bot2
     build:
-      context: "${BOT_2_PATH}"
+      context: "${BOT_1_PATH}"
     depends_on:
       - server
+ 
