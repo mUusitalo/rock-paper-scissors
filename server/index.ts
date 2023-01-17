@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
 })
 
 server.listen(SERVER_PORT)
+console.log("Server listening on port " + SERVER_PORT)
 
 function socketToPromiseRepeater(socket: Socket): () => Promise<Move> {
   let resolvePromise: ((move: Move) => void) | null = null
