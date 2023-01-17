@@ -1,9 +1,7 @@
 import { io } from 'socket.io-client'
 import dotenv from 'dotenv'
-dotenv.config({path: '../../.env'})
 
-const { HOST, SERVER_PORT } = process.env
-const SERVER_URL = `http://${HOST}:${SERVER_PORT}`
+const SERVER_URL = 'http://localhost:3001'
 
 export const Moves = {
   ROCK: 0,
@@ -20,7 +18,7 @@ type RoundResult = {
 }
 
 function main() {
-  const socket = io(SERVER_URL)
+  const socket = io(SERVER_URL, { autoConnect: true })
   
   let roundIndex = 0
 
