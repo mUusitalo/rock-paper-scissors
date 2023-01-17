@@ -1,3 +1,4 @@
+import { Socket } from 'socket.io'
 import { Round } from './logic/Round'
 import { Move, Result } from './logic/gameLogic'
 
@@ -15,15 +16,20 @@ export type MatchResult = {
 
 export type TimedMove = { move: Move; timeTakenMs: number }
 
+export type RoundReason = 'move' | 'time'
+
 export type RoundResult = {
   winner: Result
-  reason: 'move' | 'time'
+  reason: RoundReason
 }
 
 export type PersonalizedResult = {
-  you?: Move,
-  opponent?: Move,
+  you?: Move
+  opponent?: Move
   result: 'win' | 'loss' | 'draw'
 }
 
-
+export type Matchup = {
+  left?: { name: string; socket: Socket }
+  right?: { name: string; socket: Socket }
+}

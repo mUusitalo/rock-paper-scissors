@@ -5,7 +5,7 @@ import { MatchResult, PersonalizedResult, RoundResult } from '../types'
 type getNewMove = (previousRound?: PersonalizedResult) => Promise<Move>
 
 class Match {
-  rounds: RoundResult[] = []
+  rounds: Round[] = []
   result: Promise<MatchResult>
   roundCount: number
   roundTimeoutMs: number
@@ -19,7 +19,7 @@ class Match {
     })
   }
 
-  async run(getLeftMove: getNewMove, getRightMove: getNewMove): Promise<void> {
+  async run(getLeftMove: getNewMove, getRightMove: getNewMove, onResult: ((result: RoundResult) => void)): Promise<void> {
     let previousRound: Round | null = null
 
     for (let i = 0; i < this.roundCount; i++) {
@@ -38,14 +38,15 @@ class Match {
         'RIGHT'
       )
       const roundResult = await round.result
-      this.rounds.push(roundResult)
+      onResult(roundResult)
+      this.rounds.push(round)
       previousRound = round
     }
 
-    this.resolveResult!(this.calculateMatchResult())
+    this.resolveResult!(await this.calculateMatchResult())
   }
 
-  private calculateMatchResult(): MatchResult {
+  private async calculateMatchResult(): Promise<MatchResult> {
     const roundsPlayed = this.rounds.length
 
     if (roundsPlayed != this.roundCount) {
@@ -54,8 +55,8 @@ class Match {
       )
     }
 
-    const left = this.rounds.filter((round) => round.winner === 'LEFT').length
-    const right = this.rounds.filter((round) => round.winner === 'RIGHT').length
+    const left = this.rounds.filter(async (round) => (await round.result).winner === 'LEFT').length
+    const right = this.rounds.filter(async (round) => (await round.result).winner === 'RIGHT').length
 
     const winner = left > right ? 'LEFT' : right > left ? 'RIGHT' : 'DRAW'
     return { winner, reason: 'rounds' }

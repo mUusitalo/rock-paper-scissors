@@ -27,7 +27,7 @@ function App() {
       }
     })
 
-    socket.on('round', (data: Round[]) => {
+    socket.on('rounds', (data: Round[]) => {
       setRounds(data)
     })
 
