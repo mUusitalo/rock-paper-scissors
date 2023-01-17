@@ -1,11 +1,27 @@
-import { RoundLine } from "./RoundLine"
 import type { Round } from "./types"
 
-const RoundDisplay = ({rounds} : {rounds: Round[]}) => {
+const RoundDisplay = ({rounds, leftName, rightName} : {rounds: Round[], leftName: string, rightName: string}) => {
   return (
-    <>
-      {rounds.map((round, index) => <RoundLine key={index} {...round} />)}
-    </>
+    <table>
+      <thead>
+        <tr>
+          <th>Round</th>
+          <th>{leftName}</th>
+          <th>{rightName}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rounds.map((round, index) => {
+          return (
+            <tr>
+              <td>{index}</td>
+              <td>{round.left ?? 'timeout'}</td>
+              <td>{round.right ?? 'timeout'}</td>
+            </tr>  
+          )}
+        )}
+      </tbody>
+    </table>
   )
 }
 

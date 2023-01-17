@@ -29,7 +29,6 @@ function App() {
 
   useEffect(() => {
     socket.connect()
-    
     socket.on('bots', (bots: Bots) => {
       console.log(bots)
       setBots(bots)
@@ -60,7 +59,7 @@ function App() {
   return (
     <div className="App">
       <StartMatchButton onClick={handleStartClick} isDisabled={startDisabled} />
-      <RoundDisplay rounds={rounds} />
+      <RoundDisplay rounds={rounds} leftName={bots.left ?? 'Not connected'} rightName={bots.right ?? 'Not connected'}/>
       {winningSide && <h2>Winner: {winningSide}</h2>}
     </div>
   );
