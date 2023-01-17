@@ -1,5 +1,5 @@
 import { Move, Side, runGame } from './gameLogic'
-import { TimedMove, RoundResult, PersonalizedResult } from './types'
+import { TimedMove, RoundResult, PersonalizedResult } from '../types'
 
 export class Round {
   timeoutMs: number

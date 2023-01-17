@@ -1,5 +1,5 @@
-import { Round } from './Round'
-import { Move, Result } from './gameLogic'
+import { Round } from './logic/Round'
+import { Move, Result } from './logic/gameLogic'
 
 export type Match = {
   roundCount: number

@@ -1,9 +1,9 @@
 import { Server, Socket } from 'socket.io'
 import { createServer } from 'http'
 import express from 'express'
-import Match from './Match'
+import Match from './logic/Match'
 import { ROUND_COUNT, ROUND_DURATION, SERVER_PORT } from './config'
-import { Move } from './gameLogic'
+import { Move } from './logic/gameLogic'
 import { isMove } from './validateInput'
 
 const app = express()

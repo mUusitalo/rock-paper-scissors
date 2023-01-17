@@ -1,6 +1,6 @@
 import { Round } from './Round'
 import { Move, Side } from './gameLogic'
-import { MatchResult, PersonalizedResult, RoundResult } from './types'
+import { MatchResult, PersonalizedResult, RoundResult } from '../types'
 
 type getNewMove = (previousRound?: PersonalizedResult) => Promise<Move>
 
