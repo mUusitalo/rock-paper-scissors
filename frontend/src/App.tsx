@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client'
 import './App.css';
 import { SERVER_URL } from './config'; 
-import { Round, Side } from './types';
+import { Bots, Round, Side } from './types';
 import RoundDisplay from './RoundDisplay';
 import { StartMatchButton } from './StartRoundButton';
 
@@ -13,10 +13,18 @@ function App() {
   const [rounds, setRounds] = useState<Round[]>([])
   const [winningSide, setWinningSide] = useState<Side | null>(null)
   const [startDisabled, setStartDisabled] = useState(true)
+  const [bots, setBots] = useState<Bots>({})
 
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected')
+    })
+
+    socket.on('bots', (bots: Bots) => {
+      setBots(bots)
+      if (bots.left && bots.right) {
+        setStartDisabled(false)
+      }
     })
 
     socket.on('round', (data: Round[]) => {

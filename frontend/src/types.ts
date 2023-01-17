@@ -6,13 +6,15 @@ export const Moves = {
 
 export type Move = keyof typeof Moves
 
-export type Side = "LEFT" | "RIGHT"
+export type Side = 'LEFT' | 'RIGHT'
 
-export type Result = Side | "DRAW"
+export type Result = Side | 'DRAW'
 
 export type Round = {
-  left?: Move,
-  right?: Move,
+  left?: Move
+  right?: Move
   winner: Result
   reason: 'move' | 'time'
 }
+
+export type Bots = { left?: string; right?: string }
