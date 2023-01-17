@@ -1,0 +1,28 @@
+services:
+  server:
+    image: server
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - 3001:3001
+
+  bot1:
+    image: bot1
+    env_file:
+      - .env
+    build:
+      context: "${BOT_1_PATH}"
+    depends_on:
+      - server
+
+  bot2:
+    image: bot2
+    env_file:
+      - .env
+    build:
+      context: "${BOT_2_PATH}"
+    depends_on:
+      - server
