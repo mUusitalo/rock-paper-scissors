@@ -18,15 +18,22 @@ class RoundResult:
   result: Result
 
 sio = socketio.Client()
-sio.connect(SERVER_URL)
 
 round_index = 0
 
-@sio.on("round")
-def handle_round(previous_round: RoundResult | None):
+@sio.event
+def connect():
+  print("Connected to server")
+  sio.emit("bot", "example-python")
+
+@sio.event
+def round(previous_round: RoundResult | None):
   global round_index
   print(previous_round)
   possible_moves = list(get_args(Move))
   move = possible_moves[round_index % len(possible_moves)]
   sio.emit("move", move)
   round_index += 1
+
+print(f"Trying to connect to {SERVER_URL}")
+sio.connect(SERVER_URL)

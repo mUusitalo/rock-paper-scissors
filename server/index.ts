@@ -7,16 +7,30 @@ import { Move, Result, Side } from './logic/gameLogic'
 import { isMove } from './validateInput'
 import { Matchup, RoundReason, RoundResult } from './types'
 import { Round } from './logic/Round'
+import cors from 'cors'
 
 const app = express()
+app.use(cors())
 const server = createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  }
+})
 
 const connections: Socket[] = []
 
 const bots: Matchup = {}
 
 const match = new Match(ROUND_COUNT, ROUND_DURATION)
+
+function updateBots() {
+  console.log('Bots: ', bots)
+  io.emit('bots', {
+    left: bots?.left?.name,
+    right: bots?.right?.name,
+  })
+}
 
 io.on('connection', (socket) => {
   connections.push(socket)
@@ -29,9 +43,13 @@ io.on('connection', (socket) => {
     if (bots.right?.socket === socket) {
       bots.right = undefined
     }
+    updateBots()
   })
 
+  socket.on('getBots', updateBots)
+
   socket.on('bot', (bot: string) => {
+    console.log("Bot trying to connect: ", bot)
     if (!bots.left) {
       bots.left = { name: bot, socket }
     } else if (!bots.right) {
@@ -39,10 +57,17 @@ io.on('connection', (socket) => {
     } else {
       throw new Error('Too many bots')
     }
+    updateBots()
   })
 
+  socket.on('start', () => {
+    if (bots.left && bots.right) {
+      startMatch()
+    }
+  })
+  
+  updateBots()
   console.log('Connections: ', connections.length)
-  console.log('Bots: ', bots)
 })
 
 server.listen(SERVER_PORT)
@@ -84,8 +109,8 @@ async function startMatch() {
         rounds: match.rounds.map(async ({ left, right, result }: Round) => {
           const { winner, reason } : { winner: Result, reason: RoundReason} = await result
           return {
-            left,
-            right,
+            left: left?.move,
+            right: right?.move,
             winner,
             reason,
           }

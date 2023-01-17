@@ -24,6 +24,11 @@ function main() {
   
   let roundIndex = 0
 
+  socket.on('connect', () => {
+    console.log("Connected to server")
+    socket.emit('bot', 'example-node')
+  })
+
   socket.on('round', (previousRound: RoundResult | undefined) => {
     console.log(previousRound)
     const possibleMoves = Object.keys(Moves) as Move[]

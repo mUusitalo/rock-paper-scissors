@@ -7,7 +7,19 @@ import RoundDisplay from './RoundDisplay';
 import { StartMatchButton } from './StartRoundButton';
 
 
+
 const socket = io(SERVER_URL)
+console.log('Connecting to server at ', SERVER_URL)
+
+socket.on('reconnect', () => {
+  console.log('Reconnected to server')
+  socket.emit("getBots")
+})
+
+socket.on('connect', () => {
+  console.log('Connected to server')
+  socket.emit("getBots")
+})
 
 function App() {
   const [rounds, setRounds] = useState<Round[]>([])
@@ -16,11 +28,10 @@ function App() {
   const [bots, setBots] = useState<Bots>({})
 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('connected')
-    })
-
+    socket.connect()
+    
     socket.on('bots', (bots: Bots) => {
+      console.log(bots)
       setBots(bots)
       if (bots.left && bots.right) {
         setStartDisabled(false)
@@ -28,12 +39,17 @@ function App() {
     })
 
     socket.on('rounds', (data: Round[]) => {
+      console.log(data)
       setRounds(data)
     })
 
     socket.on('winner', (winningSide: Side) => {
       setWinningSide(winningSide)
     })
+
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
   function handleStartClick() {
