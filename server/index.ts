@@ -104,20 +104,20 @@ async function startMatch() {
       right.emit('round', rightResult)
       return waitForRightMove()
     },
-    (result) => {
-      io.emit('rounds', {
-        rounds: match.rounds.map(async ({ left, right, result }: Round) => {
-          const { winner, reason } : { winner: Result, reason: RoundReason} = await result
-          return {
-            left: left?.move,
-            right: right?.move,
-            winner,
-            reason,
-          }
-        }),
-      })
+    async (result) => {
+      const rounds = await Promise.all(match.rounds.map(async ({ left, right, result }: Round) => {
+        const { winner, reason } : { winner: Result, reason: RoundReason} = await result
+        return {
+          left: left?.move,
+          right: right?.move,
+          winner,
+          reason,
+        }})
+      )
+      io.emit('rounds', rounds)
     }
   )
+  
 
   const result = await match.result
   console.log('Match result: ', result)
