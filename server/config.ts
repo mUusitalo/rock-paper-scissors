@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config({path: '../.env'});
-
-const { SERVER_PORT } = process.env
+const SERVER_PORT = 3001
 const ROUND_DURATION = 50
 const ROUND_COUNT = 999
 const DRAW_ROUND_CUTOFF = 5000

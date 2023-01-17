@@ -2,11 +2,8 @@ from dataclasses import dataclass
 import os
 from typing import Literal, get_args
 import socketio
-from dotenv import load_dotenv
-load_dotenv(dotenv_path="../../.env")
 
-HOST, SERVER_PORT = os.environ["HOST"], os.environ["SERVER_PORT"]
-SERVER_URL = f"http://{HOST}:{SERVER_PORT}"
+SERVER_URL = f"http://localhost:3001"
 
 Move = Literal["ROCK", "PAPER", "SCISSORS"]
 Result = Literal["win", "loss", "draw"]
@@ -36,4 +33,6 @@ def round(previous_round: RoundResult | None):
   round_index += 1
 
 print(f"Trying to connect to {SERVER_URL}")
+
 sio.connect(SERVER_URL)
+
