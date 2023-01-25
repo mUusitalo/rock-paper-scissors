@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client'
-import dotenv from 'dotenv'
 
 const SERVER_URL = process.env.SERVER_URL!
 
