@@ -6,7 +6,6 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
       - PORT=${SERVER_PORT}
-    #network_mode: host
 
   frontend:
     image: frontend
@@ -15,14 +14,13 @@ services:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     environment:
       - PORT=${FRONTEND_PORT}
-      - SERVER_URL="http://${SERVER_HOST}:${SERVER_PORT}"
-    #network_mode: host
+      - SERVER_URL="http://server:${SERVER_PORT}"
 
   bot1:
     image: bot1
     build: "${BOT_1_PATH}"
     environment:
-      - SERVER_URL="https://${SERVER_HOST}:${SERVER_PORT}"
+      - SERVER_URL="https://server:${SERVER_PORT}"
     depends_on:
       - server
 
@@ -30,7 +28,6 @@ services:
     image: bot2
     build: "${BOT_2_PATH}"
     environment:
-      - SERVER_URL="https://${SERVER_HOST}:${SERVER_PORT}"
+      - SERVER_URL="https://server:${SERVER_PORT}"
     depends_on:
       - server
- 

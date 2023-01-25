@@ -2,7 +2,7 @@ import { Server, Socket } from 'socket.io'
 import { createServer } from 'http'
 import express from 'express'
 import Match from './logic/Match'
-import { ROUND_COUNT, ROUND_DURATION, SERVER_PORT } from './config'
+import { ROUND_COUNT, ROUND_DURATION, PORT } from './config'
 import { Move, Result, Side } from './logic/gameLogic'
 import { isMove } from './validateInput'
 import { Matchup, RoundReason, RoundResult } from './types'
@@ -70,8 +70,8 @@ io.on('connection', (socket) => {
   console.log('Connections: ', connections.length)
 })
 
-server.listen(SERVER_PORT)
-console.log("Server listening on port " + SERVER_PORT)
+server.listen(PORT)
+console.log("Server listening on port " + PORT)
 
 function socketToPromiseRepeater(socket: Socket): () => Promise<Move> {
   let resolvePromise: ((move: Move) => void) | null = null

@@ -4,7 +4,7 @@ import time
 from typing import Literal, get_args
 import socketio
 
-SERVER_URL = f"http://localhost:3001"
+SERVER_URL = os.environ["SERVER_URL"]
 
 Move = Literal["ROCK", "PAPER", "SCISSORS"]
 Result = Literal["win", "loss", "draw"]
