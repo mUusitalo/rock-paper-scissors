@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import os
+import time
 from typing import Literal, get_args
 import socketio
 
@@ -14,7 +15,7 @@ class RoundResult:
   opponent: Move
   result: Result
 
-sio = socketio.Client()
+sio = socketio.Client(reconnection=True, reconnection_attempts=0)
 
 round_index = 0
 
@@ -33,6 +34,11 @@ def round(previous_round: RoundResult | None):
   round_index += 1
 
 print(f"Trying to connect to {SERVER_URL}")
-
-sio.connect(SERVER_URL)
+connected = False
+while not connected:
+    try:
+        sio.connect(SERVER_URL)
+        connected = True
+    except Exception:
+        time.sleep(0.1)
 
