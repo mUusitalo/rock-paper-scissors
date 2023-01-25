@@ -18,7 +18,9 @@ type RoundResult = {
 }
 
 function main() {
+  console.log("Trying to connect to server")
   const socket = io(SERVER_URL, { autoConnect: true })
+  socket.connect()
   
   let roundIndex = 0
 
