@@ -17,7 +17,7 @@ type RoundResult = {
 }
 
 function main() {
-  console.log("Trying to connect to server")
+  console.log(`Trying to connect to ${SERVER_URL}`)
   const socket = io(SERVER_URL, { autoConnect: true })
   socket.connect()
   
