@@ -90,8 +90,8 @@ function socketToPromiseRepeater(socket: Socket): () => Promise<Move> {
 }
 
 async function startMatch() {
-  const left = connections[0]
-  const right = connections[1]
+  const left = bots.left!.socket
+  const right = bots.right!.socket
   const waitForLeftMove = socketToPromiseRepeater(left)
   const waitForRightMove = socketToPromiseRepeater(right)
 
