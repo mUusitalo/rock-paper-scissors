@@ -55,9 +55,11 @@ class Match {
       )
     }
 
-    const left = this.rounds.filter(async (round) => (await round.result).winner === 'LEFT').length
-    const right = this.rounds.filter(async (round) => (await round.result).winner === 'RIGHT').length
-
+    const results = (await Promise.all(this.rounds.map(round => round.result))).map(result => result.winner)
+    
+    const left = results.filter(res => res === 'LEFT').length
+    const right = results.filter(res => res === 'RIGHT').length
+    
     const winner = left > right ? 'LEFT' : right > left ? 'RIGHT' : 'DRAW'
     return { winner, reason: 'rounds' }
   }

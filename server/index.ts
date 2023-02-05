@@ -118,8 +118,16 @@ async function startMatch() {
     }
   )
   
-
   const result = await match.result
   io.emit('result', result.winner)
-  console.log('Match result: ', result)
+
+  const results = (await Promise.all(match.rounds.map(round => round.result))).map(result => result.winner)
+    
+  const leftWins = results.filter(res => res === 'LEFT').length
+  const rightWins = results.filter(res => res === 'RIGHT').length
+  const draws = results.filter(res => res === 'DRAW').length
+
+  console.log({leftWins, rightWins, draws})
+  console.log('Winner: ', result.winner)
+
 }
